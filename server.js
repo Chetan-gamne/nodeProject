@@ -12,9 +12,10 @@ app.set('views',__dirname + '/views')
 app.set('layout','layouts/layout')
 app.use(expressLayouts)
 app.use(express.static("public"))
-app.use(express.urlencoded({extended:true}))
+app.use(express.urlencoded({extended:false,limit: '10mb'}))
 
 const indexRouter = require('./routes/index')
+const authorRouter = require('./routes/authors')
 
 const mongoose = require('mongoose')
 mongoose.connect(process.env.DATABASE_URL,{useNewUrlParser:true})
@@ -29,5 +30,6 @@ db.once('open',() => {
 })
 
 app.use('/',indexRouter)
+app.use('/authors',authorRouter)
 
 app.listen(process.env.PORT || 3000)
